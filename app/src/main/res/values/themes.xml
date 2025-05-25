@@ -2,7 +2,8 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Tinder" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/pink</item>
+         <item name="colorPrimaryVariant">@color/pink</item>
     </style>
 
     <style name="Theme.Tinder" parent="Base.Theme.Tinder" />
