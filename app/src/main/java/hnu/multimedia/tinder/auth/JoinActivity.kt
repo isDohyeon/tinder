@@ -1,12 +1,15 @@
 package hnu.multimedia.tinder.auth
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import hnu.multimedia.tinder.MainActivity
 import hnu.multimedia.tinder.databinding.ActivityJoinBinding
 import hnu.multimedia.tinder.util.FirebaseRef
@@ -14,6 +17,7 @@ import hnu.multimedia.tinder.util.FirebaseRef
 class JoinActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityJoinBinding.inflate(layoutInflater) }
+    private var uri: Uri = Uri.EMPTY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +36,17 @@ class JoinActivity : AppCompatActivity() {
             } else {
                 createUser(email, password)
             }
+        }
+
+        val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { _uri ->
+            _uri?.let {
+                binding.imageViewPhoto.setImageURI(_uri)
+                uri = _uri
+            }
+        }
+
+        binding.imageViewPhoto.setOnClickListener{
+            launcher.launch("image/*")
         }
     }
 
@@ -60,5 +75,8 @@ class JoinActivity : AppCompatActivity() {
         val age = binding.editTextAge.text.toString().toInt()
         val userModel = UserModel(uid, nickName, age, sex, city)
         FirebaseRef.users.child(uid).setValue(userModel)
+        if (uri != Uri.EMPTY) {
+            Firebase.storage.reference.child("$uid.jpg").putFile(uri)
+        }
     }
 }
