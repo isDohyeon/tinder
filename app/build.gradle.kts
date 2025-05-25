@@ -72,4 +72,6 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.github.yuyakaido:CardStackView:v2.3.4")
 }
