@@ -9,6 +9,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import hnu.multimedia.tinder.MainActivity
 import hnu.multimedia.tinder.databinding.ActivityJoinBinding
+import hnu.multimedia.tinder.util.FirebaseRef
 
 class JoinActivity : AppCompatActivity() {
 
@@ -29,20 +30,35 @@ class JoinActivity : AppCompatActivity() {
             } else if (sex != "W" && sex != "M") {
                 Snackbar.make(binding.root, "성별을 M 혹은 W로 입력해주세요.", Snackbar.LENGTH_LONG).show()
             } else {
-                Firebase.auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener{
-                        if (it.isSuccessful) {
-                            Snackbar.make(binding.root, "회원가입 성공!.", Snackbar.LENGTH_LONG)
-                                .show()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Snackbar.make(binding.root, "회원가입 실패", Snackbar.LENGTH_LONG)
-                                .show()
-                        }
-                    }
+                createUser(email, password)
             }
         }
+    }
+
+    private fun createUser(email: String, password: String) {
+        Firebase.auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    saveUser()
+                    Snackbar.make(binding.root, "회원가입 성공!.", Snackbar.LENGTH_LONG)
+                        .show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Snackbar.make(binding.root, "회원가입 실패", Snackbar.LENGTH_LONG)
+                        .show()
+                }
+            }
+    }
+
+    private fun saveUser() {
+        val uid = Firebase.auth.currentUser?.uid ?: ""
+        val nickName = binding.editTextNickname.text.toString()
+        val sex = binding.editTextSex.text.toString()
+        val city = binding.editTextArea.text.toString()
+        val age = binding.editTextAge.text.toString().toInt()
+        val userModel = UserModel(uid, nickName, age, sex, city)
+        FirebaseRef.users.child(uid).setValue(userModel)
     }
 }
