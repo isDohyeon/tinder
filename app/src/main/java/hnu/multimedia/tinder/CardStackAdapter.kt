@@ -20,6 +20,6 @@ class CardStackAdapter(val list: List<String>) : RecyclerView.Adapter<CardStackA
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.textView.text = list[position]
+        holder.binding.textViewNick.text = list[position]
     }
 }

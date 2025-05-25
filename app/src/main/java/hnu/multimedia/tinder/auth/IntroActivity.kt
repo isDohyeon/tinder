@@ -3,6 +3,7 @@ package hnu.multimedia.tinder.auth
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import hnu.multimedia.tinder.MainActivity
 import hnu.multimedia.tinder.databinding.ActivityIntroBinding
 
 class IntroActivity : AppCompatActivity() {
@@ -15,6 +16,12 @@ class IntroActivity : AppCompatActivity() {
 
         binding.buttonJoin.setOnClickListener {
             val intent = Intent(this, JoinActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.buttonLogin.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
