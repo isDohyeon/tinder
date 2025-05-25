@@ -1,11 +1,15 @@
 package hnu.multimedia.tinder
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.Direction
+import hnu.multimedia.tinder.auth.IntroActivity
 import hnu.multimedia.tinder.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -39,5 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.cardStackView.layoutManager = layoutManager
         binding.cardStackView.adapter = CardStackAdapter(list)
+
+        binding.imageViewLogout.setOnClickListener{
+            Firebase.auth.signOut()
+            val intent = Intent(this, IntroActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 }
