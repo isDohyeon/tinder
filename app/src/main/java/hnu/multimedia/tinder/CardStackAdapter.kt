@@ -3,9 +3,10 @@ package hnu.multimedia.tinder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ItemCardBinding
 
-class CardStackAdapter(val list: List<String>) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
+class CardStackAdapter(val list: List<UserModel>) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemCardBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -20,6 +21,8 @@ class CardStackAdapter(val list: List<String>) : RecyclerView.Adapter<CardStackA
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.textViewNick.text = list[position]
+        holder.binding.textViewNick.text = list[position].nickName
+        holder.binding.textViewCity.text = list[position].city
+        holder.binding.textViewAge.text = list[position].age.toString()
     }
 }
