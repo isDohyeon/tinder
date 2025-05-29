@@ -16,6 +16,12 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/imageViewMyPage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/person" />
+
+        <ImageView
             android:id="@+id/imageViewLogout"
             android:layout_width="50dp"
             android:layout_height="50dp"

@@ -16,6 +16,7 @@ import com.yuyakaido.android.cardstackview.Direction
 import hnu.multimedia.tinder.auth.IntroActivity
 import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ActivityMainBinding
+import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity() {
             Firebase.auth.signOut()
             val intent = Intent(this, IntroActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        binding.imageViewMyPage.setOnClickListener {
+            val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
     }
