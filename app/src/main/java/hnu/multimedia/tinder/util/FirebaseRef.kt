@@ -10,6 +10,7 @@ class FirebaseRef {
         private val database = Firebase.database
         val users = database.getReference("users")
         var currentUserId = Firebase.auth.currentUser?.uid ?: ""
+        var likes = database.getReference("likes")
 
         fun initCUid() {
             currentUserId = Firebase.auth.currentUser?.uid ?: ""
