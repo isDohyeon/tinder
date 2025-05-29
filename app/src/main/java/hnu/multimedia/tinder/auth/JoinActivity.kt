@@ -18,6 +18,7 @@ class JoinActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityJoinBinding.inflate(layoutInflater) }
     private var uri: Uri = Uri.EMPTY
+    private var isPhotoAvailable = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +30,7 @@ class JoinActivity : AppCompatActivity() {
             val passwordCheck = binding.editTextPasswordCheck.text.toString()
             val sex = binding.editTextSex.text.toString()
 
-            if (password != passwordCheck) {
-                Snackbar.make(binding.root, "패스워드를 동일하게 입력해주세요.", Snackbar.LENGTH_LONG).show()
-            } else if (sex != "W" && sex != "M") {
-                Snackbar.make(binding.root, "성별을 M 혹은 W로 입력해주세요.", Snackbar.LENGTH_LONG).show()
-            } else {
+            if (validateInfo(email, password, passwordCheck, sex)) {
                 createUser(email, password)
             }
         }
@@ -42,12 +39,42 @@ class JoinActivity : AppCompatActivity() {
             _uri?.let {
                 binding.imageViewPhoto.setImageURI(_uri)
                 uri = _uri
+                isPhotoAvailable = true
             }
         }
 
         binding.imageViewPhoto.setOnClickListener{
             launcher.launch("image/*")
         }
+    }
+
+    private fun validateInfo(
+        email: String,
+        password: String,
+        passwordCheck: String,
+        sex: String
+    ) : Boolean {
+        if (email.isEmpty()) {
+            Snackbar.make(binding.root, "이메일을 입력해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (password.isEmpty()) {
+            Snackbar.make(binding.root, "패스워드를 입력해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (password != passwordCheck) {
+            Snackbar.make(binding.root, "패스워드를 동일하게 입력해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (sex != "W" && sex != "M") {
+            Snackbar.make(binding.root, "성별을 M 혹은 W로 입력해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (!isPhotoAvailable) {
+            Snackbar.make(binding.root, "사진을 등록해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        return true
     }
 
     private fun createUser(email: String, password: String) {

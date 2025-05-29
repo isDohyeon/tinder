@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         getUsers()
+        FirebaseRef.initCUid()
 
         binding.cardStackView.layoutManager = layoutManager
         binding.cardStackView.adapter = CardStackAdapter(users)
