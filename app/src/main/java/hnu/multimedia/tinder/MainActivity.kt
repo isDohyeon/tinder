@@ -28,23 +28,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val layoutManager = CardStackLayoutManager(baseContext, object : CardStackListener {
-            override fun onCardDragging(direction: Direction?, ratio: Float) {
-            }
-
-            override fun onCardSwiped(direction: Direction?) {
-            }
-
-            override fun onCardRewound() {
-            }
-
-            override fun onCardCanceled() {
-            }
-
-            override fun onCardAppeared(view: View?, position: Int) {
-            }
-
-            override fun onCardDisappeared(view: View?, position: Int) {
-            }
+            override fun onCardDragging(direction: Direction?, ratio: Float) {}
+            override fun onCardSwiped(direction: Direction?) {}
+            override fun onCardRewound() {}
+            override fun onCardCanceled() {}
+            override fun onCardAppeared(view: View?, position: Int) {}
+            override fun onCardDisappeared(view: View?, position: Int) {}
         })
 
         getUsers()
