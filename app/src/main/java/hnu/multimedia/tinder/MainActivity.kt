@@ -64,7 +64,9 @@ class MainActivity : AppCompatActivity() {
                 for (dataModel in snapshot.children) {
                     val value = dataModel.getValue(UserModel::class.java)
                     value?.let {
-                        users.add(value)
+                        if (value.sex != MyData.userModel.sex) {
+                            users.add(value)
+                        }
                     }
                 }
                 binding.cardStackView.adapter?.notifyDataSetChanged()
