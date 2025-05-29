@@ -29,8 +29,10 @@ class JoinActivity : AppCompatActivity() {
             val password = binding.editTextPassword.text.toString()
             val passwordCheck = binding.editTextPasswordCheck.text.toString()
             val sex = binding.editTextSex.text.toString()
+            val age = binding.editTextAge.text.toString()
+            val nickname = binding.editTextNickname.text.toString()
 
-            if (validateInfo(email, password, passwordCheck, sex)) {
+            if (validateInfo(email, password, passwordCheck, sex, age, nickname)) {
                 createUser(email, password)
             }
         }
@@ -52,7 +54,9 @@ class JoinActivity : AppCompatActivity() {
         email: String,
         password: String,
         passwordCheck: String,
-        sex: String
+        sex: String,
+        age: String,
+        nickname: String
     ) : Boolean {
         if (email.isEmpty()) {
             Snackbar.make(binding.root, "이메일을 입력해주세요.", Snackbar.LENGTH_LONG).show()
@@ -72,6 +76,14 @@ class JoinActivity : AppCompatActivity() {
         }
         if (!isPhotoAvailable) {
             Snackbar.make(binding.root, "사진을 등록해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (age.isEmpty()) {
+            Snackbar.make(binding.root, "나이를 입력해주세요.", Snackbar.LENGTH_LONG).show()
+            return false
+        }
+        if (nickname.isEmpty()) {
+            Snackbar.make(binding.root, "닉네임을 입력해주세요.", Snackbar.LENGTH_LONG).show()
             return false
         }
         return true

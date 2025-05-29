@@ -18,6 +18,7 @@ import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ActivityMainBinding
 import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
+import hnu.multimedia.tinder.util.MyData
 
 class MainActivity : AppCompatActivity() {
 
