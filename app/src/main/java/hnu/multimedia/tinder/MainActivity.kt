@@ -10,6 +10,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
@@ -37,8 +38,7 @@ class MainActivity : AppCompatActivity() {
                 if (direction == Direction.Right) {
                     val likeUid = users[swipeCount].uid
                     FirebaseRef.likes.child(FirebaseRef.currentUserId).child(likeUid).setValue(true)
-                } else if (direction == Direction.Left) {
-
+                    likeMe(likeUid)
                 }
 
                 swipeCount++
@@ -71,6 +71,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun likeMe(likeUid: String) {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.getValue<Boolean>() == true) {
+                    Snackbar.make(binding.root, "매칭되었습니다!", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        FirebaseRef.likes.child(likeUid).child(FirebaseRef.currentUserId).addValueEventListener(postListener)
     }
 
     private fun getUsers() {
