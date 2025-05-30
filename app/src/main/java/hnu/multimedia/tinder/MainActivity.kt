@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val users = mutableListOf<UserModel>()
+    private var swipeCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,20 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = CardStackLayoutManager(baseContext, object : CardStackListener {
             override fun onCardDragging(direction: Direction?, ratio: Float) {}
-            override fun onCardSwiped(direction: Direction?) {}
+            override fun onCardSwiped(direction: Direction?) {
+                if (direction == Direction.Right) {
+                    val likeUid = users[swipeCount].uid
+                    FirebaseRef.likes.child(FirebaseRef.currentUserId).child(likeUid).setValue(true)
+                    likeMe(likeUid)
+                }
+
+                swipeCount++
+                if (swipeCount == users.size) {
+                    getUsers()
+                    swipeCount = 0
+                    Snackbar.make(binding.root, "사용자 목록이 새로 갱신되었습니다", Snackbar.LENGTH_SHORT).show()
+                }
+            }
             override fun onCardRewound() {}
             override fun onCardCanceled() {}
             override fun onCardAppeared(view: View?, position: Int) {}
@@ -55,6 +71,18 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MyPageActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun likeMe(likeUid: String) {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.getValue<Boolean>() == true) {
+                    Snackbar.make(binding.root, "매칭되었습니다!", Snackbar.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        FirebaseRef.likes.child(likeUid).child(FirebaseRef.currentUserId).addValueEventListener(postListener)
     }
 
     private fun getUsers() {
