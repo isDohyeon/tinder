@@ -3,6 +3,7 @@ package hnu.multimedia.tinder.messages
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -21,6 +22,8 @@ class LikesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getLikes()
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = LikesAdapter(likedUsers)
     }
 
     private fun getLikes() {
@@ -52,8 +55,7 @@ class LikesActivity : AppCompatActivity() {
                         }
                     }
                 }
-                Log.d("LikesActivity", "getLikedUsers: ${likedUsers}")
-//                binding.cardStackView.adapter?.notifyDataSetChanged()
+                binding.recyclerView.adapter?.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {}
         }
