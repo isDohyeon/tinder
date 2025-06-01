@@ -18,6 +18,7 @@ import com.yuyakaido.android.cardstackview.Direction
 import hnu.multimedia.tinder.auth.IntroActivity
 import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ActivityMainBinding
+import hnu.multimedia.tinder.messages.LikesActivity
 import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
@@ -70,6 +71,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.imageViewMyPage.setOnClickListener {
             val intent = Intent(this, MyPageActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.imageViewLikes.setOnClickListener {
+            val intent = Intent(this, LikesActivity::class.java)
             startActivity(intent)
         }
     }
