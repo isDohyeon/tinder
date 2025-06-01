@@ -8,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import hnu.multimedia.tinder.MainActivity
 import hnu.multimedia.tinder.databinding.ActivityIntroBinding
+import hnu.multimedia.tinder.util.NotificationUtil
 
 class IntroActivity : AppCompatActivity() {
 
@@ -45,5 +46,7 @@ class IntroActivity : AppCompatActivity() {
                     }
             }
         }
+
+        NotificationUtil.requestPermissions(this)
     }
 }

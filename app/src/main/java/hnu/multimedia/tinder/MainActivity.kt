@@ -21,6 +21,7 @@ import hnu.multimedia.tinder.databinding.ActivityMainBinding
 import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
+import hnu.multimedia.tinder.util.NotificationUtil
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 if (direction == Direction.Right) {
                     val likeUid = users[swipeCount].uid
                     FirebaseRef.likes.child(FirebaseRef.currentUserId).child(likeUid).setValue(true)
-                    likeMe(likeUid)
+                    likeMe(likeUid, users[swipeCount].nickName)
                 }
 
                 swipeCount++
@@ -73,11 +74,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun likeMe(likeUid: String) {
+    private fun likeMe(likeUid: String, nickname: String) {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.getValue<Boolean>() == true) {
                     Snackbar.make(binding.root, "매칭되었습니다!", Snackbar.LENGTH_SHORT).show()
+                    NotificationUtil.createNotification(baseContext, "매칭되었어요!!", "${nickname}님이 나를 좋아합니다!")
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
