@@ -3,12 +3,14 @@ package hnu.multimedia.tinder.auth
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.ktx.storage
 import hnu.multimedia.tinder.MainActivity
 import hnu.multimedia.tinder.databinding.ActivityJoinBinding
@@ -93,7 +95,16 @@ class JoinActivity : AppCompatActivity() {
         Firebase.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    saveUser()
+                    val uid = Firebase.auth.currentUser?.uid ?: ""
+                    saveUser(uid)
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener {
+                        if (!it.isSuccessful) {
+                            Log.d("JoinActivity", "Fetching FCM token failed: ${it.exception}")
+                            return@addOnCompleteListener
+                        }
+                        val fcmToken = it.result
+                        FirebaseRef.fcmTokens.child(uid).setValue(fcmToken)
+                    }
                     Snackbar.make(binding.root, "회원가입 성공!.", Snackbar.LENGTH_LONG)
                         .show()
                     val intent = Intent(this, MainActivity::class.java)
@@ -106,8 +117,7 @@ class JoinActivity : AppCompatActivity() {
             }
     }
 
-    private fun saveUser() {
-        val uid = Firebase.auth.currentUser?.uid ?: ""
+    private fun saveUser(uid: String) {
         val nickName = binding.editTextNickname.text.toString()
         val sex = binding.editTextSex.text.toString()
         val city = binding.editTextArea.text.toString()

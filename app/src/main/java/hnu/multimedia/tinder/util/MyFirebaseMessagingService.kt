@@ -6,7 +6,11 @@ import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
-        Log.d("MyFirebaseMessagingService", "onNewToken: ${token}")
+        Log.d("MyFirebaseMessagingService", "onNewToken: $token")
+        val currentUserId = FirebaseRef.currentUserId
+        if (currentUserId != "") {
+            FirebaseRef.fcmTokens.child(currentUserId).setValue(token)
+        }
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
