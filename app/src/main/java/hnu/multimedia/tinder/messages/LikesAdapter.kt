@@ -1,5 +1,6 @@
 package hnu.multimedia.tinder.messages
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import hnu.multimedia.tinder.auth.UserModel
+import hnu.multimedia.tinder.databinding.DialogMessageBinding
 import hnu.multimedia.tinder.databinding.ItemLikesBinding
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
@@ -49,9 +51,19 @@ class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapte
         likeMe(list[position].uid, holder)
 
         holder.binding.root.setOnClickListener {
-            val body = "${MyData.userModel.nickName}가 당신을 좋아합니다!"
-            MyFirebaseMessagingSender().sendFCM(likeUser.uid, "I like you!", body)
-            Snackbar.make(holder.binding.root, "메시지를 보냈습니다!", Snackbar.LENGTH_LONG).show()
+            val title = "${likeUser.nickName}에게 메시지 보내기"
+            val bindingDialog =
+                DialogMessageBinding.inflate(LayoutInflater.from(holder.binding.root.context))
+            val builder = AlertDialog.Builder(holder.binding.root.context)
+                .setView(bindingDialog.root)
+                .setTitle(title)
+            val dialog = builder.show()
+            bindingDialog.buttonSend.setOnClickListener {
+                Snackbar.make(holder.binding.root, "메시지를 보냈습니다!", Snackbar.LENGTH_LONG).show()
+
+                dialog.dismiss()
+            }
+//            MyFirebaseMessagingSender().sendFCM(likeUser.uid, "I like you!", body)
         }
     }
 
