@@ -12,6 +12,7 @@ class FirebaseRef {
         var currentUserId = Firebase.auth.currentUser?.uid ?: ""
         var likes = database.getReference("likes")
         val fcmTokens = database.getReference("fcmTokens")
+        val messages = database.getReference("messages")
 
         fun initCUid() {
             currentUserId = Firebase.auth.currentUser?.uid ?: ""

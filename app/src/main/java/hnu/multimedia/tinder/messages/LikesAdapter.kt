@@ -60,7 +60,8 @@ class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapte
             val dialog = builder.show()
             bindingDialog.buttonSend.setOnClickListener {
                 Snackbar.make(holder.binding.root, "메시지를 보냈습니다!", Snackbar.LENGTH_LONG).show()
-
+                val message = "${MyData.userModel.nickName} : ${bindingDialog.editTextMessage.text}"
+                FirebaseRef.messages.child(list[position].uid).push().setValue(MessageModel(FirebaseRef.currentUserId, message))
                 dialog.dismiss()
             }
 //            MyFirebaseMessagingSender().sendFCM(likeUser.uid, "I like you!", body)
