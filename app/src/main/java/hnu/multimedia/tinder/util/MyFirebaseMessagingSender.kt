@@ -1,6 +1,11 @@
 package hnu.multimedia.tinder.util
 
 import android.util.Log
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -20,7 +25,20 @@ class MyFirebaseMessagingSender {
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    fun sendFCM(targetToken: String, title: String, body: String) {
+    fun sendFCM(targetUid: String, title: String, body: String) {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val targetToken = snapshot.getValue<String>()
+                targetToken?.let {
+                    _sendFCM(it, title, body)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        FirebaseRef.fcmTokens.child(targetUid).addValueEventListener(postListener)
+    }
+
+    private fun _sendFCM(targetToken: String, title: String, body: String) {
         val url = "http://${SERVER_IP}:80/send-fcm"
 
         val json = JSONObject().apply {

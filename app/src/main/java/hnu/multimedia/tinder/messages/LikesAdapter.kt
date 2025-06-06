@@ -16,6 +16,8 @@ import com.google.firebase.storage.ktx.storage
 import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ItemLikesBinding
 import hnu.multimedia.tinder.util.FirebaseRef
+import hnu.multimedia.tinder.util.MyData
+import hnu.multimedia.tinder.util.MyFirebaseMessagingSender
 import hnu.multimedia.tinder.util.NotificationUtil
 
 class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapter.ViewHolder>() {
@@ -45,6 +47,12 @@ class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapte
         }
 
         likeMe(list[position].uid, holder)
+
+        holder.binding.root.setOnClickListener {
+            val body = "${MyData.userModel.nickName}가 당신을 좋아합니다!"
+            MyFirebaseMessagingSender().sendFCM(likeUser.uid, "I like you!", body)
+            Snackbar.make(holder.binding.root, "메시지를 보냈습니다!", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     private fun likeMe(likeUid: String, holder: ViewHolder) {

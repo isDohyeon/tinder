@@ -80,10 +80,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.buttonFCM.setOnClickListener {
-            val sender = MyFirebaseMessagingSender()
-            sender.sendFCM("co4TYsuaQD-pNr7pWQPjgQ:APA91bEIWb1laUK6BxCOD3DOidqW0ahu5M-RW4ey6mOP4r06yLociByppjuCExPwfXZiahSjKHvxeJphTsfkhra-No-mdjiEIyr0e9jBOKNb5aB9PfXHnzs", "테스트 제목", "테스트 내용")
-        }
     }
 
     private fun likeMe(likeUid: String, nickname: String) {

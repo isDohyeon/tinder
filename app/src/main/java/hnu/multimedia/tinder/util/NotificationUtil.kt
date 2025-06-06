@@ -41,7 +41,7 @@ class NotificationUtil {
             builder.setContentTitle(title)
             builder.setContentText(message)
 
-            notificationManager.notify(1, builder.build())
+            notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
         }
 
         fun requestPermissions(activity: AppCompatActivity) {
