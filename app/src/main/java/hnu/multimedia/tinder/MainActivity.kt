@@ -22,6 +22,7 @@ import hnu.multimedia.tinder.messages.LikesActivity
 import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
+import hnu.multimedia.tinder.util.MyFirebaseMessagingSender
 import hnu.multimedia.tinder.util.NotificationUtil
 
 class MainActivity : AppCompatActivity() {
@@ -77,6 +78,11 @@ class MainActivity : AppCompatActivity() {
         binding.imageViewLikes.setOnClickListener {
             val intent = Intent(this, LikesActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.buttonFCM.setOnClickListener {
+            val sender = MyFirebaseMessagingSender()
+            sender.sendFCM("co4TYsuaQD-pNr7pWQPjgQ:APA91bEIWb1laUK6BxCOD3DOidqW0ahu5M-RW4ey6mOP4r06yLociByppjuCExPwfXZiahSjKHvxeJphTsfkhra-No-mdjiEIyr0e9jBOKNb5aB9PfXHnzs", "테스트 제목", "테스트 내용")
         }
     }
 
