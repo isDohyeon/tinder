@@ -1,13 +1,22 @@
 package hnu.multimedia.tinder.messages
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ItemLikesBinding
+import hnu.multimedia.tinder.util.FirebaseRef
+import hnu.multimedia.tinder.util.NotificationUtil
 
 class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapter.ViewHolder>() {
 
@@ -34,5 +43,20 @@ class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapte
                 .load(uri)
                 .into(holder.binding.imageViewPhoto)
         }
+
+        likeMe(list[position].uid, holder)
     }
+
+    private fun likeMe(likeUid: String, holder: ViewHolder) {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.getValue<Boolean>() == true) {
+                    holder.binding.imageViewLike.isVisible = true
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        }
+        FirebaseRef.likes.child(likeUid).child(FirebaseRef.currentUserId).addValueEventListener(postListener)
+    }
+
 }
