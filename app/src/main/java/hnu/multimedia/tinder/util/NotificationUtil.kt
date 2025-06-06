@@ -35,6 +35,7 @@ class NotificationUtil {
                 builder = NotificationCompat.Builder(context, CHANNEL_ID)
             } else {
                 builder = NotificationCompat.Builder(context)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
             }
             builder.setSmallIcon(R.drawable.logo_yellow)
             builder.setPriority(NotificationCompat.PRIORITY_HIGH)

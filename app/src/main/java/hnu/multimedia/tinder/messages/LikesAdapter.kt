@@ -2,7 +2,6 @@ package hnu.multimedia.tinder.messages
 
 import android.app.AlertDialog
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,6 @@ import hnu.multimedia.tinder.databinding.ItemLikesBinding
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
 import hnu.multimedia.tinder.util.MyFirebaseMessagingSender
-import hnu.multimedia.tinder.util.NotificationUtil
 
 class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapter.ViewHolder>() {
 
@@ -62,9 +60,10 @@ class LikesAdapter(val list: List<UserModel>) : RecyclerView.Adapter<LikesAdapte
                 Snackbar.make(holder.binding.root, "메시지를 보냈습니다!", Snackbar.LENGTH_LONG).show()
                 val message = "${MyData.userModel.nickName} : ${bindingDialog.editTextMessage.text}"
                 FirebaseRef.messages.child(list[position].uid).push().setValue(MessageModel(FirebaseRef.currentUserId, message))
+                val messageTitle = "${MyData.userModel.nickName}님이 메시지를 보냈어요!"
+                MyFirebaseMessagingSender().sendFCM(likeUser.uid, messageTitle, message)
                 dialog.dismiss()
             }
-//            MyFirebaseMessagingSender().sendFCM(likeUser.uid, "I like you!", body)
         }
     }
 
