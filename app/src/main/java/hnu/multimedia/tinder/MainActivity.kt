@@ -19,6 +19,7 @@ import hnu.multimedia.tinder.auth.IntroActivity
 import hnu.multimedia.tinder.auth.UserModel
 import hnu.multimedia.tinder.databinding.ActivityMainBinding
 import hnu.multimedia.tinder.messages.LikesActivity
+import hnu.multimedia.tinder.messages.MessagesActivity
 import hnu.multimedia.tinder.mypage.MyPageActivity
 import hnu.multimedia.tinder.util.FirebaseRef
 import hnu.multimedia.tinder.util.MyData
@@ -80,6 +81,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.imageViewMessages.setOnClickListener {
+            val intent = Intent(this, MessagesActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun likeMe(likeUid: String, nickname: String) {

@@ -16,6 +16,13 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/imageViewMessages"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@drawable/message" />
+
+        <ImageView
             android:id="@+id/imageViewLikes"
             android:layout_width="50dp"
             android:layout_height="50dp"
