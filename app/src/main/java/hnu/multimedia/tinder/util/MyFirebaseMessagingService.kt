@@ -12,6 +12,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         message.notification?.let {
             Log.d("MyFirebaseMessagingService", "onMessageReceived: ${it.title}")
+            NotificationUtil.createNotification(this, it.title ?: "No Title", it.body ?: "No Body")
         }
     }
 }
